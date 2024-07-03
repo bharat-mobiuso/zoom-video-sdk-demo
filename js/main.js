@@ -276,10 +276,11 @@ function displayMessage(heading = 'Oops, Something went wrong!', description = '
 }
 
 async function extractMeetingDetailsFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const topicNameFromUrl = urlParams.get('topicName');
+    const usernameFromUrl = urlParams.get('username');
+
     if (window.location.pathname === '/zoom/getToken') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const topicNameFromUrl = urlParams.get('topicName');
-        const usernameFromUrl = urlParams.get('username');
         const roleFromUrl = urlParams.get('role') === '1' ? 1 : 0;
 
         const tokenFromUrl = generateSignature(topicNameFromUrl, roleFromUrl);
@@ -290,10 +291,7 @@ async function extractMeetingDetailsFromUrl() {
 
         console.log('JOIN_URL :: ', `${window.location.origin}?topicName=${topic}&token=${token}&username=${username}`)
     } else {
-        const urlParams = new URLSearchParams(window.location.search);
-        const topicNameFromUrl = urlParams.get('topicName');
         const tokenFromUrl = urlParams.get('token');
-        const usernameFromUrl = urlParams.get('username');
 
         topic = topicNameFromUrl;
         token = tokenFromUrl;
@@ -308,14 +306,31 @@ async function extractMeetingDetailsFromUrl() {
     uitoolkit.openPreview(previewContainer)
 }
 
+const onUnload = (event) => {
+    const confirmationMessage = "tab close";
+
+    client.leave(true)
+        .catch((error) => {
+            console.error('ERROR', error)
+        });
+
+
+    (event || window.event).returnValue = confirmationMessage;     //Gecko + IE
+    return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+}
+
 if (window.addEventListener) {
     window.addEventListener('load', async () => {
         InitiateSpeedDetection();
         await extractMeetingDetailsFromUrl();
     }, false);
+
+    window.addEventListener('beforeunload', onUnload, false);
 } else if (window.attachEvent) {
     window.attachEvent('onload', async () => {
         InitiateSpeedDetection();
         await extractMeetingDetailsFromUrl();
     });
+
+    window.attachEvent('beforeunload', onUnload);
 }
