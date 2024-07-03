@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Video SDK UI Toolkit JavaScript Sample</title>
+  <link rel="shortcut icon" href="assets/javascript.svg" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- // This file will enable SAB support using a service worker.-->
+  <script src="js/coi-serviceworker.js"></script>
+</head>
+<body>
+<!--  Watermark Component -->
+  <h1 class="headline position-absolute right-0 watermark">Zoom VideoSDK Demo</h1>
+<!--  /Watermark Component -->
+
+<!--  Message Component -->
+  <div id="messageContainer" class="d-none absolute-center text-center">
+    <h1 class="headline"></h1>
+    <p class="description"></p>
+  </div>
+<!--  /Message Component -->
+
+  <div id='progress' class="position-absolute"></div>
+<!--  <video-player-container></video-player-container>-->
+  <div id='sessionContainer' class="position-absolute t-l-b-r-0  container justify-content-center align-items-center"></div>
+  <div id='previewContainer' class="container justify-content-center align-items-center">
+    <div class="join-button container justify-content-center">
+      <button id="start-btn" class="btn btn-primary">
+        Join
+      </button>
+    </div>
+  </div>
+
+<!--  Script Files -->
+
+  <!--
+  // Downloaded from https://source.zoom.us/videosdk/zoom-video-1.11.10.min.js for static loading
+  // To use another version of sdk replace version number in the link
+  -->
+  <script src="js/zoom-video-1.11.10.min.js"></script>
+
+  <!--
+  // Main script file
+  -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
